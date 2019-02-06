@@ -1,6 +1,7 @@
 console.log({ starting: true });
 
 import express from 'express';
+import basicAuth from 'basic-auth-connect';
 
 const app = express();
 
@@ -81,6 +82,10 @@ const Schema = new GraphQLSchema({
     query: RootQuery,
     mutation: RootMutation
 });
+
+app.use(basicAuth(function (user, pass) {
+    return pass === 'mypassword1';
+}));
 
 app.use('/graphql', graphqlHTTP({
     schema: Schema,
